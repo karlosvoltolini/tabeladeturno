@@ -21,27 +21,27 @@ def preencher_array(indice_inicial):
 def TabelaGrupoA(data):
     for i in range (60):
         aux = abs((data+datetime.timedelta(days=-5)-datetime.date(year=2023, month=4,day=22)).days)
-    return preencher_array(aux)
+    return preencher_array(aux%10)
 
 def TabelaGrupoB(data):
     for i in range (60):
         aux = abs((data+datetime.timedelta(days=-5)-datetime.date(year=2023, month=4,day=24)).days)
-    return preencher_array(aux)
+    return preencher_array(aux%10)
 
 def TabelaGrupoC(data):
     for i in range (60):
         aux = abs((data+datetime.timedelta(days=-5)-datetime.date(year=2023, month=4,day=26)).days)
-    return preencher_array(aux)
+    return preencher_array(aux%10)
 
 def TabelaGrupoD(data):
     for i in range (60):
         aux = abs((data+datetime.timedelta(days=-5)-datetime.date(year=2023, month=4,day=28)).days)
-    return preencher_array(aux)
+    return preencher_array(aux%10)
 
 def TabelaGrupoE(data):
     for i in range (60):
         aux = abs((data+datetime.timedelta(days=-5)-datetime.date(year=2023, month=5,day=1)).days)
-    return preencher_array(aux)
+    return preencher_array(aux%10)
 
 
 
