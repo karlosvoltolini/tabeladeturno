@@ -11,8 +11,25 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+#esconde o menu do streamlit
+st.markdown(""" <style>
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+</style> """, unsafe_allow_html=True)
+
+
+#reduz o espaçamento
+padding = 0
+st.markdown(f""" <style>
+    .reportview-container .main .block-container{{
+        padding-top: {padding}rem;
+        padding-right: {padding}rem;
+        padding-left: {padding}rem;
+        padding-bottom: {padding}rem;
+    }} </style> """, unsafe_allow_html=True)
+
 def preencher_array(indice_inicial):
-    tabela = ['07','07','15','15','23','23','F','F','F','F']
+    tabela = ['07x19','07x19','19x07','19x07','F','F','F','F','F','F']
     array = []
     for i in range(60):
         array.append(tabela[(10- indice_inicial + i) % len(tabela)])
@@ -20,27 +37,27 @@ def preencher_array(indice_inicial):
 
 def TabelaGrupoA(data):
     for i in range (60):
-        aux = abs((data+datetime.timedelta(days=-5)-datetime.date(year=2023, month=4,day=22)).days)
+        aux = abs((data+datetime.timedelta(days=-5)-datetime.date(year=2023, month=4,day=16)).days)
     return preencher_array(aux%10)
 
 def TabelaGrupoB(data):
     for i in range (60):
-        aux = abs((data+datetime.timedelta(days=-5)-datetime.date(year=2023, month=4,day=24)).days)
+        aux = abs((data+datetime.timedelta(days=-5)-datetime.date(year=2023, month=4,day=14)).days)
     return preencher_array(aux%10)
 
 def TabelaGrupoC(data):
     for i in range (60):
-        aux = abs((data+datetime.timedelta(days=-5)-datetime.date(year=2023, month=4,day=26)).days)
+        aux = abs((data+datetime.timedelta(days=-5)-datetime.date(year=2023, month=4,day=12)).days)
     return preencher_array(aux%10)
 
 def TabelaGrupoD(data):
     for i in range (60):
-        aux = abs((data+datetime.timedelta(days=-5)-datetime.date(year=2023, month=4,day=28)).days)
+        aux = abs((data+datetime.timedelta(days=-5)-datetime.date(year=2023, month=4,day=20)).days)
     return preencher_array(aux%10)
 
 def TabelaGrupoE(data):
     for i in range (60):
-        aux = abs((data+datetime.timedelta(days=-5)-datetime.date(year=2023, month=5,day=1)).days)
+        aux = abs((data+datetime.timedelta(days=-5)-datetime.date(year=2023, month=5,day=18)).days)
     return preencher_array(aux%10)
 
 
@@ -50,7 +67,7 @@ def main():
 
     st.header("REPAR")
 
-    st.subheader("Tabela de Turno 08 h")
+    st.subheader("Tabela de Turno 12x12 h")
 
 
 
