@@ -1,8 +1,14 @@
 import streamlit as st
 import pandas as pd
+from unidecode import unidecode
+
 # from st_aggrid import AgGrid, GridOptionsBuilder
 import calendar
 import datetime
+
+
+# Configurações da página
+
 
 st.set_page_config(
     page_title="Tabela de Turno Repar",
@@ -28,38 +34,40 @@ st.markdown(f""" <style>
         padding-bottom: {padding}rem;
     }} </style> """, unsafe_allow_html=True)
 
+
+
+# Funções para retornar o array com os valores da tabela de turno de cada grupo,
+# o preenchimento do array deve ser feito copiando os valores da tabela de turno iniciando
+# pelo indice_inicial e se repetindo de forma cíclica até o final do array
 def preencher_array(indice_inicial):
     tabela = ['07x19','07x19','19x07','19x07','F','F','F','F','F','F']
     array = []
     for i in range(60):
-        array.append(tabela[(10- indice_inicial + i) % len(tabela)])
+        array.append(tabela[(indice_inicial+i)%10])
     return array
 
+
+
 def TabelaGrupoA(data):
-    for i in range (60):
-        aux = abs((data+datetime.timedelta(days=-5)-datetime.date(year=2023, month=4,day=16)).days)
+
+    aux = abs((data+datetime.timedelta(days=-5)-datetime.date(year=2023, month=4,day=12)).days)
     return preencher_array(aux%10)
 
 def TabelaGrupoB(data):
-    for i in range (60):
-        aux = abs((data+datetime.timedelta(days=-5)-datetime.date(year=2023, month=4,day=14)).days)
+    aux = abs((data+datetime.timedelta(days=-5)-datetime.date(year=2023, month=4,day=14)).days)
     return preencher_array(aux%10)
 
 def TabelaGrupoC(data):
-    for i in range (60):
-        aux = abs((data+datetime.timedelta(days=-5)-datetime.date(year=2023, month=4,day=12)).days)
+    aux = abs((data+datetime.timedelta(days=-5)-datetime.date(year=2023, month=4,day=16)).days)
     return preencher_array(aux%10)
 
 def TabelaGrupoD(data):
-    for i in range (60):
-        aux = abs((data+datetime.timedelta(days=-5)-datetime.date(year=2023, month=4,day=20)).days)
+    aux = abs((data+datetime.timedelta(days=-5)-datetime.date(year=2023, month=4,day=18)).days)
     return preencher_array(aux%10)
 
 def TabelaGrupoE(data):
-    for i in range (60):
-        aux = abs((data+datetime.timedelta(days=-5)-datetime.date(year=2023, month=5,day=18)).days)
+    aux = abs((data+datetime.timedelta(days=-5)-datetime.date(year=2023, month=5,day=20)).days)
     return preencher_array(aux%10)
-
 
 
 def main():
@@ -79,21 +87,49 @@ def main():
 
     TabelaGrupoA(selected_date)
 
-    # Criação do DataFrame
+    # Função para substituir o nome do mês
+    def traduzir_mes(mes):
+        meses = {
+            "January": "Janeiro",
+            "February": "Fevereiro",
+            "March": "Março",
+            "April": "Abril",
+            "May": "Maio",
+            "June": "Junho",
+            "July": "Julho",
+            "August": "Agosto",
+            "September": "Setembro",
+            "October": "Outubro",
+            "November": "Novembro",
+            "December": "Dezembro"
+        }
+        return meses.get(mes, mes)
 
-    date_range = pd.date_range(selected_date+datetime.timedelta(days=-5), periods=60, freq='D')
+    # Função para substituir o nome do dia da semana
+    def traduzir_dia_semana(dia_semana):
+        dias_semana = {
+            "Monday": "Segunda-feira",
+            "Tuesday": "Terça-feira",
+            "Wednesday": "Quarta-feira",
+            "Thursday": "Quinta-feira",
+            "Friday": "Sexta-feira",
+            "Saturday": "Sábado",
+            "Sunday": "Domingo"
+        }
+        return dias_semana.get(dia_semana, dia_semana)
+
+    # Criação do DataFrame
+    date_range = pd.date_range(selected_date + datetime.timedelta(days=-5), periods=60, freq='D')
     df = pd.DataFrame({
         'Data': date_range.strftime("%d/%m/%Y"),
-        'Mês' : date_range.month_name(),
-        'Dia da Semana': date_range.day_name(),
+        'Mês': date_range.strftime("%B").map(traduzir_mes),
+        'Dia da Semana': date_range.strftime("%A").map(traduzir_dia_semana),
         'GRUPO A': TabelaGrupoA(selected_date),
         'GRUPO B': TabelaGrupoB(selected_date),
         'GRUPO C': TabelaGrupoC(selected_date),
         'GRUPO D': TabelaGrupoD(selected_date),
         'GRUPO E': TabelaGrupoE(selected_date)
-
     })
-
 
     # st.text(days_in_month)
     # st.text(date_range)
